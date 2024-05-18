@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    List<Category> findCategoriesByCustomerId(Long customerId);
+    List<Category> findCategoriesByUserId(Long UserId);
 
-    Category findCategoryByIdAndCustomerId(Long categoryId, Long customerId);
+    Category findCategoryByIdAndUserId(Long categoryId, Long UserId);
 
-    void deleteCategoryByIdAndCustomerId(Long categoryId, Long customerId);
+    void deleteCategoryByIdAndUserId(Long categoryId, Long UserId);
 }
