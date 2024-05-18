@@ -13,7 +13,7 @@ public class CategoryToCategoryDTOConverter implements Converter<Category, Categ
         CategoryDTO categoryDTO = new CategoryDTO();
         categoryDTO.setId(source.getId());
         categoryDTO.setCategoryName(source.getName());
-        categoryDTO.setCustomerId(source.getId());
+        categoryDTO.setUserId(source.getId());
 
         return categoryDTO;
     }
