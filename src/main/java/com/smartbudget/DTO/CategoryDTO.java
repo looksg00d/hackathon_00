@@ -8,6 +8,6 @@ import lombok.experimental.Accessors;
 public class CategoryDTO {
     private long id;
     private String categoryName;
-    private long customerId;
+    private long userId;
 
 }
