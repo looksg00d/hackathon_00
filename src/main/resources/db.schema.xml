@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd
+        http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.5.xsd">
+
+    <changeSet id="init" author="vdolzhnikov">
+        <createTable tableName="app_user">
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints unique="true" nullable="false" primaryKey="true"/>
+            </column>
+            <column name="username" type="varchar(255)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar(255)">
+                <constraints unique="false" nullable="false"/>
+            </column>
+            <column name="surname" type="varchar(255)">
+                <constraints unique="false" nullable="false"/>
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints unique="false" nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="app_user_role">
+            <column name="app_user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="app_user_role" baseColumnNames="app_user_id"
+                                 constraintName="app_user_role_app_user_id"
+                                 referencedTableName="app_user"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="account">
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints unique="true" nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints unique="false" nullable="false"/>
+            </column>
+            <column name="balance" type="int">
+                <constraints unique="false" nullable="false"/>
+            </column>
+            <column name="app_user_id" type="bigint">
+                <constraints unique="false" nullable="false" foreignKeyName="account_app_user_id"
+                             references="app_user(id)"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="transaction">
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints unique="true" nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints unique="false" nullable="false"/>
+            </column>
+            <column name="date" type="timestamp(0)">
+                <constraints unique="false" nullable="false"/>
+            </column>
+            <column name="from_account_id" type="bigint">
+                <constraints unique="false" nullable="true"/>
+            </column>
+            <column name="to_account_id" type="bigint">
+                <constraints unique="false" nullable="true"/>
+            </column>
+            <column name="amount" type="int">
+                <constraints unique="false" nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="category">
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints unique="true" nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints unique="false" nullable="false"/>
+            </column>
+            <column name="app_user_id" type="bigint">
+                <constraints unique="false" nullable="false" foreignKeyName="category_app_user_id"
+                             references="app_user(id)"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="transaction_to_category">
+            <column name="transaction_id" type="int">
+                <constraints unique="false" nullable="false" foreignKeyName="transaction_to_category_transaction_id"
+                             references="transaction(id)"/>
+            </column>
+            <column name="category_id" type="int">
+                <constraints unique="false" nullable="false" foreignKeyName="transaction_to_category_category_id"
+                             references="category(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
