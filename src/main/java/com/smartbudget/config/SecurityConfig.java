@@ -38,6 +38,4 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    // Предполагается, что UserDetailsService будет настроен где-то еще
 }

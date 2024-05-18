@@ -10,8 +10,6 @@ public class Role {
     private Long id;
     private String name;
 
-    // getters and setters
-
     public Long getId() {
         return id;
     }

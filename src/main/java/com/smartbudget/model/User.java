@@ -18,8 +18,6 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
-    // getters and setters
-
     public Long getId() {
         return id;
     }
