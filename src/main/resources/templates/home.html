@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <style>
+        .account-card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        .account-details {
+            display: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<h1>Welcome, User</h1>
+
+<h2>Create a new account</h2>
+<form id="create-account-form">
+    <label for="name">Account Name:</label>
+    <input type="text" id="name" name="name">
+    <label for="balance">Initial Balance:</label>
+    <input type="number" id="balance" name="balance">
+    <button type="submit">Create Account</button>
+</form>
+
+<h2>Your Accounts</h2>
+<div id="accounts-list"></div>
+
+<div id="account-details" class="account-details">
+    <h2>Account Details</h2>
+    <p><strong>Name:</strong> <span id="account-name"></span></p>
+    <p><strong>Balance:</strong> <span id="account-balance"></span></p>
+</div>
+
+<script>
+    document.getElementById('create-account-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var accountName = document.getElementById('name').value;
+        var balance = document.getElementById('balance').value;
+        fetch('/accounts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name: accountName, balance: balance }) // Backend expects 'name'
+        }).then(response => response.json()).then(data => {
+            // Refresh the accounts list
+            loadAccounts();
+        }).catch(error => {
+            console.error('Error creating account:', error);
+        });
+    });
+
+    function loadAccounts() {
+        fetch('/accounts').then(response => response.json()).then(data => {
+            var accountsList = document.getElementById('accounts-list');
+            accountsList.innerHTML = '';
+            data.forEach(account => {
+                var div = document.createElement('div');
+                div.className = 'account-card';
+                div.textContent = account.accountName; // Ensure this is correct
+                div.dataset.accountId = account.id;
+                div.addEventListener('click', function() {
+                    loadAccountDetails(account.id);
+                });
+                accountsList.appendChild(div);
+            });
+        }).catch(error => {
+            console.error('Error loading accounts:', error);
+        });
+    }
+
+    function loadAccountDetails(accountId) {
+        fetch('/accounts/' + accountId)
+            .then(response => response.json())
+            .then(data => {
+                console.log('Account Details:', data);  // Debugging
+                document.getElementById('account-name').textContent = data.accountName; // Ensure this is correct
+                document.getElementById('account-balance').textContent = data.balance;
+                document.getElementById('account-details').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error loading account details:', error);
+            });
+    }
+
+    // Initial load
+    loadAccounts();
+</script>
+</body>
+</html>
