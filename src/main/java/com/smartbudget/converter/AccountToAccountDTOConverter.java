@@ -15,7 +15,7 @@ public class AccountToAccountDTOConverter implements Converter<Account, AccountD
         accountDTO.setId(source.getId());
         accountDTO.setAccountName(source.getName());
         accountDTO.setBalance(source.getBalance());
-        accountDTO.setUserId(source.getUser().getId());
+        accountDTO.setCustomerId(source.getUser().getId());
 
         return accountDTO;
     }
